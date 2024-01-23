@@ -20,7 +20,15 @@ namespace GildedTros.App
                 {
                     if (Items[i].Quality > 0)
                     {
-                        if (Items[i].Name != "B-DAWG Keychain")
+                        if (Items[i].Name == Constants.DUPLICATE_CODE ||
+                            Items[i].Name == Constants.UGLY_VARIABLE_NAMES ||
+                            Items[i].Name == Constants.LONG_METHODS)
+                            
+                        {
+                            int result = Items[i].Quality - 2;
+                            Items[i].Quality = result < 0 ? 0 : result;
+                        }
+                        else if (Items[i].Name != "B-DAWG Keychain")
                         {
                             Items[i].Quality = Items[i].Quality - 1;
                         }
@@ -33,7 +41,7 @@ namespace GildedTros.App
                         Items[i].Quality = Items[i].Quality + 1;
 
                         if (Items[i].Name == "Backstage passes for Re:factor"
-                        || Items[i].Name == "Backstage passes for HAXX")
+                            || Items[i].Name == "Backstage passes for HAXX")
                         {
                             if (Items[i].SellIn < 11)
                             {
@@ -68,7 +76,15 @@ namespace GildedTros.App
                         {
                             if (Items[i].Quality > 0)
                             {
-                                if (Items[i].Name != "B-DAWG Keychain")
+                                if (Items[i].Name == Constants.DUPLICATE_CODE ||
+                                    Items[i].Name == Constants.UGLY_VARIABLE_NAMES ||
+                                    Items[i].Name == Constants.LONG_METHODS)
+
+                                {
+                                    int result = Items[i].Quality - 2;
+                                    Items[i].Quality = result < 0 ? 0 : result;
+                                }
+                                else if (Items[i].Name != "B-DAWG Keychain")
                                 {
                                     Items[i].Quality = Items[i].Quality - 1;
                                 }
