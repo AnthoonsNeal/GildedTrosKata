@@ -11,4 +11,9 @@ public static class Constants
     public static string DUPLICATE_CODE = "Duplicate Code";
     public static string LONG_METHODS = "Long Methods";
     public static string UGLY_VARIABLE_NAMES = "Ugly Variable Names";
+    
+    public static int MIN_QUALITY = 0;
+    public static int MAX_QUALITY = 50;
+    public static int BACKSTAGE_PASSES_THRESHOLD_1 = 10;
+    public static int BACKSTAGE_PASSES_THRESHOLD_2 = 5;
 }
