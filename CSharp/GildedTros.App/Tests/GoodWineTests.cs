@@ -27,7 +27,7 @@ public class GoodWineTests
     {
         // Arrange
         int qualityBeforeUpdate = 5;
-        Item item = ItemFactory.CreateGoodWine(-2, qualityBeforeUpdate);
+        Item item = ItemFactory.CreateGoodWine(0, qualityBeforeUpdate);
         IList<Item> items = new List<Item> { item };
         var app = new GildedTros(items);
             

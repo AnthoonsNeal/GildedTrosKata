@@ -20,7 +20,7 @@ public static class SmellyItemsTestData
         {
             { ItemFactory.CreateDuplicateCode(-5, 10) },
             { ItemFactory.CreateLongMethods(-1, 8) },
-            { ItemFactory.CreateUglyVariableNames(-7, 18) }
+            { ItemFactory.CreateUglyVariableNames(0, 18) }
         };
     }
     

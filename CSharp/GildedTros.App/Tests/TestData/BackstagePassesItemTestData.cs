@@ -36,7 +36,7 @@ public static class BackstagePassesItemTestData
         return new TheoryData<Item>
         {
             { ItemFactory.CreateBackstagePassesForRefactor(-3, 5) },
-            { ItemFactory.CreateBackstagePassesForHaxx(-1, 10) }
+            { ItemFactory.CreateBackstagePassesForHaxx(0, 10) }
         };
     }
 }

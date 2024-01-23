@@ -9,6 +9,7 @@ public class BDawgKeychainTests
     [Theory]
     [InlineData(5, 10)]
     [InlineData(-5, 10)]
+    [InlineData(0, 10)]
     public void UpdateQuality_BDawgKeyChainItem_NeverChangesQualityOrSellIn(int sellInBeforeUpdate, int qualityBeforeUpdate)
     {
         // Arrange
