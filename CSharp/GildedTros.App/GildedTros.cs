@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ApprovalUtilities.Utilities;
 using GildedTros.App.Handlers;
 using GildedTros.App.Handlers.Chain;
 using GildedTros.App.Handlers.Decorators;
@@ -7,7 +8,7 @@ namespace GildedTros.App
 {
     public class GildedTros
     {
-        private ItemHandlerChain _chainOfResponsibilityItemHandler = new ItemHandlerChain();
+        private readonly ItemHandlerChain _chainOfResponsibilityItemHandler = new();
         IList<Item> Items;
 
         public GildedTros(IList<Item> Items)
@@ -85,12 +86,6 @@ namespace GildedTros.App
                 .AddItemHandler(uglyVariableHandler);
         }
 
-        public void UpdateQuality()
-        {
-            foreach (var item in Items)
-            {
-                _chainOfResponsibilityItemHandler.Handle(item);
-            }
-        }
+        public void UpdateQuality() => Items.ForEach(item => _chainOfResponsibilityItemHandler.Handle(item));
     }
 }
