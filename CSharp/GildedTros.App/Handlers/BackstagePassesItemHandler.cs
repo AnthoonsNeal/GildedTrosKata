@@ -2,6 +2,12 @@
 
 public class BackstagePassesItemHandler : IHandler
 {
+    private BackstagePassesItemHandler()
+    {
+    }
+
+    public static BackstagePassesItemHandler Create() => new();
+    
     public void Handle(Item item)
     {
         if (item.SellIn < Constants.MIN_QUALITY)

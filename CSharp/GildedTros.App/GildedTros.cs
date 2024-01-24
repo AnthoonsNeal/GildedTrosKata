@@ -2,7 +2,7 @@
 using ApprovalUtilities.Utilities;
 using GildedTros.App.Handlers;
 using GildedTros.App.Handlers.Chain;
-using GildedTros.App.Handlers.Decorators;
+using GildedTros.App.Handlers.Extensions;
 
 namespace GildedTros.App
 {
@@ -19,71 +19,39 @@ namespace GildedTros.App
         
         private void SetUpHandler()
         {
-            var ringHandler = new ItemHandler(
-                    Constants.RING_OF_CLEANSENING_CODE,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new StandardItemHandler(-1, -1)),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-            
-            var elixirHandler = new ItemHandler(
-                    Constants.ELIXIR_OF_THE_SOLID,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new StandardItemHandler(-1, -1)),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-            
-            var goodWineHandler = new ItemHandler(
-                    Constants.GOOD_WINE,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new StandardItemHandler(1, 1)),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-
-            var backstagePassesRefactorHandler = new ItemHandler(
-                    Constants.BACKSTAGE_PASSES_REFACTOR,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new BackstagePassesItemHandler()),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-            
-            var backstagePasseHaxxHandler = new ItemHandler(
-                    Constants.BACKSTAGE_PASSES_HAXX,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new BackstagePassesItemHandler()),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-            
-            var duplicateCodeHandler = new ItemHandler(
-                    Constants.DUPLICATE_CODE,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new StandardItemHandler(-2, -2)),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-            
-            var longMethodsHandler = new ItemHandler(
-                    Constants.LONG_METHODS,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new StandardItemHandler(-2, -2)),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-            
-            var uglyVariableHandler = new ItemHandler(
-                    Constants.UGLY_VARIABLE_NAMES,
-                    new QualityCapHandler(
-                        new DecrementSellInHandler(new StandardItemHandler(-2, -2)),
-                        Constants.MIN_QUALITY,
-                        Constants.MAX_QUALITY));
-
             _chainOfResponsibilityItemHandler
-                .AddItemHandler(ringHandler)
-                .AddItemHandler(elixirHandler)
-                .AddItemHandler(goodWineHandler)
-                .AddItemHandler(backstagePasseHaxxHandler)
-                .AddItemHandler(backstagePassesRefactorHandler)
-                .AddItemHandler(duplicateCodeHandler)
-                .AddItemHandler(longMethodsHandler)
-                .AddItemHandler(uglyVariableHandler);
+                .AddItemHandler(Constants.RING_OF_CLEANSENING_CODE, () =>
+                    StandardItemHandler.Create(-1, -1)
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.ELIXIR_OF_THE_SOLID, () =>
+                    StandardItemHandler.Create(-1, -1)
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.GOOD_WINE, () =>
+                    StandardItemHandler.Create(1, 1)
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.BACKSTAGE_PASSES_REFACTOR, () =>
+                    BackstagePassesItemHandler.Create()
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.BACKSTAGE_PASSES_HAXX, () =>
+                    BackstagePassesItemHandler.Create()
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.LONG_METHODS, () =>
+                    StandardItemHandler.Create(-2, -2)
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.DUPLICATE_CODE, () =>
+                    StandardItemHandler.Create(-2, -2)
+                        .CapQualityMinMax()
+                        .DecrementSellIn())
+                .AddItemHandler(Constants.UGLY_VARIABLE_NAMES, () =>
+                    StandardItemHandler.Create(-2, -2)
+                        .CapQualityMinMax()
+                        .DecrementSellIn());
         }
 
         public void UpdateQuality() => Items.ForEach(item => _chainOfResponsibilityItemHandler.Handle(item));

@@ -26,7 +26,6 @@ namespace GildedTros.App
 
             var app = new GildedTros(Items);
 
-
             for (var i = 0; i < 31; i++)
             {
                 Console.WriteLine("-------- day " + i + " --------");
