@@ -17,8 +17,8 @@ public static class NormalItemsTestData
     {
         return new TheoryData<Item>
         {
-            { ItemFactory.CreateRingOfCleansening(0, 82) },
-            { ItemFactory.CreateElixirOfTheSolid(-8, 54) }
+            { ItemFactory.CreateRingOfCleansening(0, 32) },
+            { ItemFactory.CreateElixirOfTheSolid(-8, 44) }
         };
     }
     

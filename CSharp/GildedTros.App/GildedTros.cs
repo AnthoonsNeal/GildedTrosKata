@@ -1,109 +1,95 @@
 ﻿using System.Collections.Generic;
+using GildedTros.App.Handlers;
+using GildedTros.App.Handlers.Chain;
+using GildedTros.App.Handlers.Decorators;
 
 namespace GildedTros.App
 {
     public class GildedTros
     {
+        private ItemHandlerChain _chainOfResponsibilityItemHandler = new ItemHandlerChain();
         IList<Item> Items;
+
         public GildedTros(IList<Item> Items)
         {
             this.Items = Items;
+            SetUpHandler();
+        }
+        
+        private void SetUpHandler()
+        {
+            var ringHandler = new ItemHandler(
+                    Constants.RING_OF_CLEANSENING_CODE,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new StandardItemHandler(-1, -1)),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+            
+            var elixirHandler = new ItemHandler(
+                    Constants.ELIXIR_OF_THE_SOLID,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new StandardItemHandler(-1, -1)),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+            
+            var goodWineHandler = new ItemHandler(
+                    Constants.GOOD_WINE,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new StandardItemHandler(1, 1)),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+
+            var backstagePassesRefactorHandler = new ItemHandler(
+                    Constants.BACKSTAGE_PASSES_REFACTOR,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new BackstagePassesItemHandler()),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+            
+            var backstagePasseHaxxHandler = new ItemHandler(
+                    Constants.BACKSTAGE_PASSES_HAXX,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new BackstagePassesItemHandler()),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+            
+            var duplicateCodeHandler = new ItemHandler(
+                    Constants.DUPLICATE_CODE,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new StandardItemHandler(-2, -2)),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+            
+            var longMethodsHandler = new ItemHandler(
+                    Constants.LONG_METHODS,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new StandardItemHandler(-2, -2)),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+            
+            var uglyVariableHandler = new ItemHandler(
+                    Constants.UGLY_VARIABLE_NAMES,
+                    new QualityCapHandler(
+                        new DecrementSellInHandler(new StandardItemHandler(-2, -2)),
+                        Constants.MIN_QUALITY,
+                        Constants.MAX_QUALITY));
+
+            _chainOfResponsibilityItemHandler
+                .AddItemHandler(ringHandler)
+                .AddItemHandler(elixirHandler)
+                .AddItemHandler(goodWineHandler)
+                .AddItemHandler(backstagePasseHaxxHandler)
+                .AddItemHandler(backstagePassesRefactorHandler)
+                .AddItemHandler(duplicateCodeHandler)
+                .AddItemHandler(longMethodsHandler)
+                .AddItemHandler(uglyVariableHandler);
         }
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Items.Count; i++)
+            foreach (var item in Items)
             {
-                if (Items[i].Name != "B-DAWG Keychain")
-                {
-                    Items[i].SellIn = Items[i].SellIn - 1;
-                }
-                
-                if (Items[i].Name != "Good Wine" 
-                    && Items[i].Name != "Backstage passes for Re:factor"
-                    && Items[i].Name != "Backstage passes for HAXX")
-                {
-                    if (Items[i].Quality > 0)
-                    {
-                        if (Items[i].Name == Constants.DUPLICATE_CODE ||
-                            Items[i].Name == Constants.UGLY_VARIABLE_NAMES ||
-                            Items[i].Name == Constants.LONG_METHODS)
-                            
-                        {
-                            int result = Items[i].Quality - 2;
-                            Items[i].Quality = result < 0 ? 0 : result;
-                        }
-                        else if (Items[i].Name != "B-DAWG Keychain")
-                        {
-                            Items[i].Quality = Items[i].Quality - 1;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Items[i].Quality < 50)
-                    {
-                        Items[i].Quality = Items[i].Quality + 1;
-
-                        if (Items[i].Name == "Backstage passes for Re:factor"
-                            || Items[i].Name == "Backstage passes for HAXX")
-                        {
-                            if (Items[i].SellIn < Constants.BACKSTAGE_PASSES_THRESHOLD_1)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-
-                            if (Items[i].SellIn < Constants.BACKSTAGE_PASSES_THRESHOLD_2)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                if (Items[i].SellIn < 0)
-                {
-                    if (Items[i].Name != "Good Wine")
-                    {
-                        if (Items[i].Name != "Backstage passes for Re:factor"
-                            && Items[i].Name != "Backstage passes for HAXX")
-                        {
-                            if (Items[i].Quality > 0)
-                            {
-                                if (Items[i].Name == Constants.DUPLICATE_CODE ||
-                                    Items[i].Name == Constants.UGLY_VARIABLE_NAMES ||
-                                    Items[i].Name == Constants.LONG_METHODS)
-
-                                {
-                                    int result = Items[i].Quality - 2;
-                                    Items[i].Quality = result < 0 ? 0 : result;
-                                }
-                                else if (Items[i].Name != "B-DAWG Keychain")
-                                {
-                                    Items[i].Quality = Items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (Items[i].Quality < 50)
-                        {
-                            Items[i].Quality = Items[i].Quality + 1;
-                        }
-                    }
-                }
+                _chainOfResponsibilityItemHandler.Handle(item);
             }
         }
     }
